@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="d3.js" charset="utf-8"></script>
+    <style media="screen">
+    #svg1 {border:1px solid black;}
+    </style>
+    <script>
+    window.onload=function (){
+      //1.准备工作
+      var svg=d3.select('#svg1');
+      var g=svg.append('g')
+      .attr('transform', 'translate(400,300)');
+
+      var colors=['#A0C', '#0AC', '#AC0', '#00C'];
+
+      //2.饼图生成器
+      var pieGen=d3.pie();
+
+      //3.生成一堆arc数据
+      var arrArc=pieGen([3000, 48000, 69000, 12000]);
+
+      console.log(arrArc);
+
+      //4.arc生成器
+      var arcGen=d3.arc();
+
+      //5.arc生成器+arc数据  =>  一堆字符串
+      for(var i=0;i<arrArc.length;i++){
+        var strArc=arcGen({
+          innerRadius: 0,
+          outerRadius: 150,
+          startAngle: arrArc[i].startAngle,
+          endAngle: arrArc[i].endAngle
+        });
+
+        //6.生成path元素
+        g.append('path')
+        .attr('d', strArc)
+        .attr('fill', colors[i]);
+      }
+    };
+    </script>
+  </head>
+  <body>
+    <svg id="svg1" width="800" height="600"></svg>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+    body {background:black;text-align:center;}
+    #c1 {background:white;}
+    </style>
+    <script>
+    function getRads (degrees) { return (Math.PI * degrees) / 180; }  //角度转弧度
+    function getDegrees (rads) { return (rads * 180) / Math.PI; }  //弧度转角度
+
+    window.onload = function (){
+      var oC = document.getElementById('c1');
+      var oBtn = document.getElementById('btn1');
+
+      var gd = oC.getContext('2d');
+
+      function pie(startAng, endAng, color) {
+        //#1.根据角度,画出线条
+        var x = Math.cos(getRads(startAng))*150+300;
+        var y = Math.sin(getRads(startAng))*150+300;
+
+        gd.beginPath();
+        gd.moveTo(300,300);
+        gd.lineTo(x,y);
+        gd.strokeStyle = 'cyan';
+        gd.stroke();
+
+        //#2.画弧
+        gd.arc(300,300,150,getRads(startAng),getRads(endAng),false);
+
+        //#3.闭合
+        gd.closePath();
+
+        gd.fillStyle = color;
+        gd.fill();
+      }
+
+      //原始数据
+      var arr = [1,1,1,1,1,1];
+      var aColor = ['red', 'blue', 'green', 'yellow', 'pink', 'purple'];
+
+      //1.求和:(目的算出每个部分所占的等分,求得对应角度)
+      var sum = 0;
+      for(var i = 0;i<arr.length;i++){
+        sum += arr[i];
+      }
+
+      //2.比例、角度(算出每份所占角度)
+      var arrAng = [];
+      for(var i = 0;i<arr.length;i++){
+        arrAng[i] = 360*arr[i]/sum;
+      }
+
+      //3.画角
+      //第n个pie      前一次~前一次+arrAng[n]
+      var now = 0;
+      for(var i = 0;i<arrAng.length;i++){
+        pie(now, now+arrAng[i], aColor[i]);
+        now += arrAng[i];
+      }
+    };
+    </script>
+  </head>
+  <body>
+    <canvas id="c1" width="800" height="600"></canvas>
+  </body>
+</html>
