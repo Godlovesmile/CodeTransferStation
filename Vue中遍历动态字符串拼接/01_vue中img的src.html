@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>axios数据请求</title>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <ul>
+      <li v-for='item in weatherArr'>
+        <!-- 链接参考 : http://openweathermap.org/img/w/02n.png -->
+
+        <!-- 方法一 -->
+        <!-- <img :src=" 'http://openweathermap.org/img/w/'+item.weather[0].icon+'.png' "> -->
+
+        <!-- 方法二 -->
+        <!-- es6中的语法 : ${} 绑定值 -->
+        <img :src=`http://openweathermap.org/img/w/${item.weather[0].icon}.png`>
+
+        {{item.weather[0].description}}
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    new Vue({
+      el : '#app',
+      data : {
+        weatherArr : []
+      },
+      created() {
+        //创建完成   调用
+        this.getData();
+      },
+      methods : {
+        //定义 请求数据 的方法
+        getData : function() {
+          //console.log(this);
+          //解决axios插件中this不是指向全局vue对象的问题
+          var that = this;
+            axios.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=Shanghai&appid=7c5219469d1d3aa869d2599559d26fc1&lang=zh_cn')
+            .then(function (response) {
+              //console.log(response);
+              //console.log(that);
+              //保存数据
+              that.weatherArr = response.data.list;
+              console.log(that.weatherArr);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      }
+    });
+   </script>
+</body>
+</html>

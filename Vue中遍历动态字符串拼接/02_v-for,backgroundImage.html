@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="https://cdn.bootcss.com/vue/2.3.3/vue.js"></script>
+  <style>
+    .imgStyle {
+      width: 100px;
+      height: 100px;
+      background: red;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <ul>
+        <li class="imgStyle" v-for='item in items' :style="{background:'url('+item.imgURL+')'}"></li>
+     </ul>
+  </div>
+
+  <script>
+    new Vue({
+      el : '#app',
+      data : {items : [{imgURL : 'img/奥迪logo.jpg'},{imgURL : 'img/宝马logo.jpg'}]}
+      })
+  </script>
+</body>
+</html>
